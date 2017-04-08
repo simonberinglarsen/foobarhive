@@ -1,0 +1,24 @@
+{
+  "name": "foorbarhive",
+  "description": "dominate the hive",
+  "main": "app.js",
+  "authors": [
+    "Simon Bering Larsen"
+  ],
+  "license": "GPL-3.0",
+  "keywords": [
+    "WebSocket",
+    "Game"
+  ],
+  "homepage": "https://github.com/simonberinglarsen/foobarhive/blob/master/README.md",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    //"bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "angularjs#^1.6.4"
+  }
+}

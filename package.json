@@ -1,0 +1,28 @@
+{
+  "name": "foobarhive",
+  "version": "0.0.1",
+  "description": "foobar hive - developer game",
+  "dependencies": {
+    "express": "^4.15.2",
+    "ws": "^1.1.4"
+  },
+  "main": "app.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simonberinglarsen/foobarhive.git"
+  },
+  "keywords": [
+    "WebSocket",
+    "Game"
+  ],
+  "author": "Simon Bering Larsen",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/simonberinglarsen/foobarhive/issues"
+  },
+  "homepage": "https://github.com/simonberinglarsen/foobarhive/blob/master/README.md"
+}
