@@ -48,6 +48,8 @@ Game.prototype.runTransaction = function (player, transaction) {
         toField.resources += transaction.amountToTransfer;
         toField.player = fromField.player;
     }
+    if(fromField.resources == 0)
+        fromField.player = 0;
 }
 Game.prototype.processRound = function () {
     console.log("Game.prototype.processRound");

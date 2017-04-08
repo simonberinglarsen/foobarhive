@@ -1,0 +1,48 @@
+doctype html
+html(lang="en")
+    head
+        meta(name="viewport",content="width=device-width, initial-scale=1")
+        // Angular Material style sheet
+        link(rel="stylesheet", href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css")
+        link(rel="stylesheet", href="styles/site.css")
+    body(ng-app="MyApp", ng-cloak)
+        div(ng-controller="AppCtrl as ctrl", ng-cloak)
+            md-toolbar(class="md-primary")
+                div(class="md-toolbar-tools")
+                    h2(class="md-flex") Development Environment
+            md-content(class="md-padding")
+                md-nav-bar(md-selected-nav-item="currentNavItem", nav-bar-aria-label="navigation links")
+                    md-nav-item(md-nav-click="goto('codePage')", name="codePage") Code
+                    md-nav-item(md-nav-click="goto('arenaConfigPage')", name="arenaConfigPage") Arena-Config
+                    md-nav-item(md-nav-click="goto('arenaPage');draw();", name="arenaPage") Arena
+                div(class="ext-content")
+                    div(ng-if="currentNavItem === 'codePage'") Code editor here..
+                    div(ng-if="currentNavItem === 'arenaConfigPage'")
+                        div(layout="column" flex-xs="100" flex-sm="100" flex="33" layout-align="center center")
+                            p Target Mode Positioning (default)
+                            md-menu
+                                md-button(class="md-raised", ng-click="$mdMenu.open($event)") Menu
+                                md-menu-content(width="6")
+                                    md-menu-item(ng-repeat="item in [1, 2, 3]")
+                                        md-button(ng-click="ctrl.announceClick($index)") Option {{item}}
+                        ul
+                            li(ng-repeat="bot in selectedBots") {{bot.name}} : count={{bot.count}}
+                        md-button(class="md-raised" ng-click="addBot()") Add
+                        md-button(class="md-raised md-primary" ng-click="magic()") Test
+                    div(ng-show="currentNavItem === 'arenaPage'")
+                        md-content(flex layout-padding)
+                            div(layout="column")
+                                div(flex)
+                                    h2(class="md-flex") Board (size: {{sizeX}} x {{sizeY}})
+                                div(flex)
+                                    canvas(id="canvas" width="680" height="480")
+                                div(flex)
+                                    md-button(class="md-raised md-warn" ng-click="step()") Step
+                                    md-button(class="md-raised" ng-click="toggleAutoRun()") Run/Stop
+                                    md-button(class="md-raised md-primary" ng-click="restart()") Restart
+        script(src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js")
+        script(src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js")
+        script(src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js")
+        script(src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js")
+        script(src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js")
+        script(src="app/main.js")

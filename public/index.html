@@ -1,93 +1,69 @@
+<!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Angular Material style sheet -->
+    <!-- Angular Material style sheet-->
     <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
     <link rel="stylesheet" href="styles/site.css">
-</head>
-
-<body ng-app="MyApp" ng-cloak>
+  </head>
+  <body ng-app="MyApp" ng-cloak>
     <div ng-controller="AppCtrl as ctrl" ng-cloak>
-        <md-toolbar class="md-primary">
-            <div class="md-toolbar-tools">
-                <h2 class="md-flex">Development Environment</h2>
+      <md-toolbar class="md-primary">
+        <div class="md-toolbar-tools">
+          <h2 class="md-flex">Development Environment</h2>
+        </div>
+      </md-toolbar>
+      <md-content class="md-padding">
+        <md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
+          <md-nav-item md-nav-click="goto('codePage')" name="codePage">Code</md-nav-item>
+          <md-nav-item md-nav-click="goto('arenaConfigPage')" name="arenaConfigPage">Arena-Config</md-nav-item>
+          <md-nav-item md-nav-click="goto('arenaPage');draw();" name="arenaPage">Arena</md-nav-item>
+        </md-nav-bar>
+        <div class="ext-content">
+          <div ng-if="currentNavItem === 'codePage'">Code editor here..</div>
+          <div ng-if="currentNavItem === 'arenaConfigPage'">
+            <div layout="column" flex-xs="100" flex-sm="100" flex="33" layout-align="center center">
+              <p>Target Mode Positioning (default)</p>
+              <md-menu>
+                <md-button ng-click="$mdMenu.open($event)" class="md-raised">Menu</md-button>
+                <md-menu-content width="6">
+                  <md-menu-item ng-repeat="item in [1, 2, 3]">
+                    <md-button ng-click="ctrl.announceClick($index)">Option {{item}}</md-button>
+                  </md-menu-item>
+                </md-menu-content>
+              </md-menu>
             </div>
-        </md-toolbar>
-        <md-content class="md-padding">
-            <md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
-                <md-nav-item md-nav-click="goto('codePage')" name="codePage">
-                    Code
-                </md-nav-item>
-                <md-nav-item md-nav-click="goto('arenaConfigPage')" name="arenaConfigPage">
-                    Arena-Config
-                </md-nav-item>
-                <md-nav-item md-nav-click="goto('arenaPage');draw();" name="arenaPage">
-                    Arena
-                </md-nav-item>
-            </md-nav-bar>
-            <div class="ext-content">
-                <div ng-if="currentNavItem === 'codePage'">Code editor here..</div>
-                <div ng-if="currentNavItem === 'arenaConfigPage'">
-                    <div layout="column" flex-xs="100" flex-sm="100" flex="33" layout-align="center center">
-                        <p>Target Mode Positioning (default)</p>
-                        <md-menu>
-                            <md-button class="md-raised" ng-click="$mdMenu.open($event)">Menu</md-button>
-                            <md-menu-content width="6">
-                                <md-menu-item ng-repeat="item in [1, 2, 3]">
-                                    <md-button ng-click="ctrl.announceClick($index)">
-                                        Option {{item}}
-                                    </md-button>
-                                </md-menu-item>
-                            </md-menu-content>
-                        </md-menu>
-                    </div>
-                    <ul>
-                        <li ng-repeat="bot in selectedBots">{{bot.name}} : count={{bot.count}}</li>
-                    </ul>
-                    <md-button class="md-raised" ng-click="addBot()">Add</md-button>
-                    <md-button class="md-raised md-primary" ng-click="magic()">Test</md-button>
+            <ul>
+              <li ng-repeat="bot in selectedBots">{{bot.name}} : count={{bot.count}}</li>
+            </ul>
+            <md-button ng-click="addBot()" class="md-raised">Add</md-button>
+            <md-button ng-click="magic()" class="md-raised md-primary">Test</md-button>
+          </div>
+          <div ng-show="currentNavItem === 'arenaPage'">
+            <md-content flex layout-padding>
+              <div layout="column">
+                <div flex>
+                  <h2 class="md-flex">Board (size: {{sizeX}} x {{sizeY}})</h2>
                 </div>
-                <div ng-show="currentNavItem === 'arenaPage'">
-                    <md-content flex layout-padding>
-                        <div layout="column">
-                            <div flex>
-                                <h2 class="md-flex">Board (size: {{sizeX}} x {{sizeY}})</h2>
-                            </div>
-                            <div flex>
-                                <canvas id="canvas" width="680" height="480"></canvas>
-
-                            </div>
-                            <div flex>
-                                <md-button class="md-raised md-warn" ng-click="step()">Step</md-button>
-                                <md-button class="md-raised" ng-click="toggleAutoRun()">Run/Stop</md-button>
-                                <md-button class="md-raised md-primary" ng-click="restart()">Restart</md-button>
-                            </div>
-                        </div>
-                    </md-content>
+                <div flex>
+                  <canvas id="canvas" width="680" height="480"></canvas>
                 </div>
-
-            </div>
-        </md-content>
+                <div flex>
+                  <md-button ng-click="step()" class="md-raised md-warn">Step</md-button>
+                  <md-button ng-click="toggleAutoRun()" class="md-raised">Run/Stop</md-button>
+                  <md-button ng-click="restart()" class="md-raised md-primary">Restart</md-button>
+                </div>
+              </div>
+            </md-content>
+          </div>
+        </div>
+      </md-content>
     </div>
-
-    <!-- Angular Material requires Angular.js Libraries -->
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
-
-    <!-- Angular Material Library -->
     <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
     <script src="app/main.js"></script>
-
-
-
-</body>
-
+  </body>
 </html>
-
-<!--
-Copyright 2016 Google Inc. All Rights Reserved. 
-Use of this source code is governed by an MIT-style license that can be in foundin the LICENSE file at http://material.angularjs.org/license.
--->

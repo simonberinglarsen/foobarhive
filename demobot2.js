@@ -13,7 +13,7 @@ DemoBot2.prototype.doMove = function (myBlocks) {
     var dest = source.neighbours[randomBlockIndex];
     var randomResources = Math.floor(Math.random() * source.resources);
     randomResources = source.resources;
-    return new Transaction(source.id, dest.id, randomResources);
+    return new Transaction(source.id, dest.id, randomResources-1);
 }
 
 //-----------------------------------------------------------------------------
