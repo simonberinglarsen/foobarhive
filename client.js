@@ -3,6 +3,7 @@ const Board = require('./board.js');
 const Game = require('./game.js');
 const DemoBot1 = require('./demobot1.js');
 const DemoBot2 = require('./demobot2.js');
+const CustomBot = require('./customBot.js');
 
 function Client(name, ws) {
     this.name = name;
@@ -10,17 +11,19 @@ function Client(name, ws) {
     this.board = new Board();
     this.game = new Game(this.board);
 
-    for(var i=0; i<10; i++)
-        this.game.addBot(new DemoBot2());
+    this.game.addBot(new CustomBot());
+    for(var i=0; i<9; i++)
+        this.game.addBot(new DemoBot1());
     this.game.restart();
     this.messageId = 0;
 }
 
 Client.prototype.setupEvents = function () {
     var _self = this;
-    _self.ws.on('message', function incoming(data) {
+    _self.ws.on('message', function incoming(clientdata) {
         //dispatch command
-        var message = { command: data, id: 0 };
+        var json = JSON.parse(clientdata);
+        var message = { command: json.command, data:json.data, id: 0 };
         console.log("command received: " + message.command);
         if (message.command == 'step') {
             _self.game.processRound();
@@ -28,9 +31,14 @@ Client.prototype.setupEvents = function () {
         }
         else if (message.command == 'refresh') {
             _self.sendGameState('refresh');
-        } else if (message.command == 'restart') {
+        } 
+        else if (message.command == 'restart') {
             _self.game.restart();
             _self.sendGameState('restart');
+        }
+        else if (message.command == 'submit') {
+            _self.game.submitCode(message.data);
+            _self.sendGameState('refresh');
         }
     });
 }

@@ -1,3 +1,5 @@
+var Transaction = require('./transaction');
+
 function Game(board) {
     this.board = board;
     this.bots = [];
@@ -12,7 +14,7 @@ Game.prototype.restart = function () {
 }
 Game.prototype.runTransaction = function (player, transaction) {
     //manipulate board..
-    if (transaction === null)
+    if (transaction === null || transaction == undefined)
         return;
     if (transaction.amountToTransfer === 0)
         return;
@@ -48,8 +50,12 @@ Game.prototype.runTransaction = function (player, transaction) {
         toField.resources += transaction.amountToTransfer;
         toField.player = fromField.player;
     }
-    if(fromField.resources == 0)
+    if (fromField.resources == 0)
         fromField.player = 0;
+}
+Game.prototype.submitCode = function (codeText) {
+    var newDoMove = new Function('myBlocks', codeText);
+    this.bots[0].doMove = newDoMove;
 }
 Game.prototype.processRound = function () {
     console.log("Game.prototype.processRound");
@@ -57,8 +63,13 @@ Game.prototype.processRound = function () {
     for (var i = 0; i < this.bots.length; i++) {
         var player = i + 1;
         var blocks = this.board.getBlocks(player);
-        var transaction = this.bots[i].doMove(blocks);
-        this.runTransaction(player, transaction);
+        var botOutput = this.bots[i].doMove(blocks);
+        if (botOutput && botOutput.length == 3) {
+            var transaction = new Transaction(botOutput[0], botOutput[1], botOutput[2]);
+            this.runTransaction(player, transaction);
+        }
+        else
+            this.runTransaction(player, null);
     }
     // add extra resources
     for (var i = 0; i < this.board.state.fields.length; i++) {

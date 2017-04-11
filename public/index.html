@@ -20,19 +20,18 @@
           <md-nav-item md-nav-click="goto('arenaPage');draw();" name="arenaPage">Arena</md-nav-item>
         </md-nav-bar>
         <div class="ext-content">
-          <div ng-if="currentNavItem === 'codePage'">Code editor here..</div>
-          <div ng-if="currentNavItem === 'arenaConfigPage'">
-            <div layout="column" flex-xs="100" flex-sm="100" flex="33" layout-align="center center">
-              <p>Target Mode Positioning (default)</p>
-              <md-menu>
-                <md-button ng-click="$mdMenu.open($event)" class="md-raised">Menu</md-button>
-                <md-menu-content width="6">
-                  <md-menu-item ng-repeat="item in [1, 2, 3]">
-                    <md-button ng-click="ctrl.announceClick($index)">Option {{item}}</md-button>
-                  </md-menu-item>
-                </md-menu-content>
-              </md-menu>
+          <div ng-show="currentNavItem === 'codePage'">
+            <div layout="column">
+              <div flex>
+                <md-button ng-click="newCode()" class="md-raised md-primary">New</md-button>
+                <md-button ng-click="saveCode()" class="md-raised">Save</md-button>
+              </div>
+              <div plex>
+                <div id="container" style="width:100%;height:640px"></div>
+              </div>
             </div>
+          </div>
+          <div ng-if="currentNavItem === 'arenaConfigPage'">
             <ul>
               <li ng-repeat="bot in selectedBots">{{bot.name}} : count={{bot.count}}</li>
             </ul>
@@ -64,6 +63,7 @@
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+    <script src="components/monaco-editor/release/min/vs/loader.js"></script>
     <script src="app/main.js"></script>
   </body>
 </html>

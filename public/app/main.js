@@ -3,7 +3,7 @@ angular.module('MyApp', ['ngMaterial'])
     .controller('AppCtrl', function ($scope) {
         var _self = this;
         // scope variables
-        $scope.currentNavItem = 'page1';
+        $scope.currentNavItem = 'codePage';
         $scope.showArena = false;
         $scope.sizeX = 0;
         $scope.sizeY = 0;
@@ -42,6 +42,10 @@ angular.module('MyApp', ['ngMaterial'])
             );
             originatorEv = null;
         };
+        $scope.saveCode = function () {
+            var codeText = $scope.editor.getValue();
+            $scope.sendClientData('submit', codeText);
+        }
 
 
         // the game
@@ -129,19 +133,26 @@ angular.module('MyApp', ['ngMaterial'])
         };
         $scope.step = function () {
             _self.stepRequests++;
-            websocket.send('step');
+            $scope.sendClientData('step');
         };
         $scope.toggleAutoRun = function () {
             _self.autoStep = !_self.autoStep;
             $scope.step();
         };
         $scope.restart = function () {
-            websocket.send('restart');
+            $scope.sendClientData('restart');
         };
+        $scope.submitCode = function () {
+            $scope.sendClientData('restart');
+        };
+        $scope.sendClientData = function (command, data) {
+            var json = { command: command, data: data };
+            websocket.send(JSON.stringify(json));
+        }
 
         websocket.onopen = function (evt) {
             _self.autoStep = false;
-            websocket.send('restart');
+            $scope.sendClientData('restart');
         }
 
         websocket.onmessage = function (evt) {
@@ -167,4 +178,31 @@ angular.module('MyApp', ['ngMaterial'])
         };
         $scope.createPlayerColors();
         $scope.draw();
+
+        // init editor
+        require.config({ paths: { 'vs': 'components/monaco-editor/release/min/vs' } });
+        require(['vs/editor/editor.main'], function () {
+            var e = document.getElementById('container');
+            $scope.editor = monaco.editor.create(e, {
+                value: [
+                    '/* ',
+                    ' * This is the AI!',
+                    ' * You have 1 input! and thats an array called: myBlocks',
+                    ' * ...use it wisely - good luck',
+                    ' */',
+                    '',
+                    'if (!myBlocks || myBlocks.length === 0)',
+                    '    return null;',
+                    'var randomBlockIndex = Math.floor(Math.random() * myBlocks.length);',
+                    'var source = myBlocks[randomBlockIndex];',
+                    'randomBlockIndex = Math.floor(Math.random() * source.neighbours.length);',
+                    'var dest = source.neighbours[randomBlockIndex];',
+                    'var randomResources = Math.floor(Math.random() * source.resources);',
+                    'randomResources = source.resources;',
+                    'return [source.id, dest.id, randomResources-1];',
+                ].join('\n'),
+                language: 'javascript'
+            });
+        });
+
     });
