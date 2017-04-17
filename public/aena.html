@@ -1,0 +1,16 @@
+
+<md-content flex="flex" layout-padding="layout-padding">
+  <div layout="column">
+    <div flex="flex">
+      <h2 class="md-flex">Board (size: {{sizeX}} x {{sizeY}})</h2>
+    </div>
+    <div flex="flex">
+      <canvas id="canvas" width="680" height="480"></canvas>
+    </div>
+    <div flex="flex">
+      <md-button ng-click="step()" class="md-raised md-warn">Step</md-button>
+      <md-button ng-click="toggleAutoRun()" class="md-raised">Run/Stop</md-button>
+      <md-button ng-click="restart()" class="md-raised md-primary">Restart</md-button>
+    </div>
+  </div>
+</md-content>

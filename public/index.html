@@ -15,44 +15,50 @@
       </md-toolbar>
       <md-content class="md-padding">
         <md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
-          <md-nav-item md-nav-click="goto('codePage')" name="codePage">Code</md-nav-item>
-          <md-nav-item md-nav-click="goto('arenaConfigPage')" name="arenaConfigPage">Arena-Config</md-nav-item>
+          <md-nav-item md-nav-click="goto('codePage');" name="codePage">Code</md-nav-item>
           <md-nav-item md-nav-click="goto('arenaPage');draw();" name="arenaPage">Arena</md-nav-item>
         </md-nav-bar>
         <div class="ext-content">
           <div ng-show="currentNavItem === 'codePage'">
-            <div layout="column">
-              <div flex>
-                <md-button ng-click="newCode()" class="md-raised md-primary">New</md-button>
-                <md-button ng-click="saveCode()" class="md-raised">Save</md-button>
+            <md-toolbar>
+              <div class="md-toolbar-tools">
+                <md-truncate>file1        </md-truncate>
               </div>
-              <div plex>
-                <div id="container" style="width:100%;height:640px"></div>
+            </md-toolbar>
+            <md-toolbar class="md-hue-2">
+              <div class="md-toolbar-tools">
+                <md-truncate>
+                  <md-button ng-click="openCode()" class="md-raised">Open</md-button>
+                  <md-button ng-click="renameCode()" class="md-raised">Rename</md-button>
+                  <md-button ng-click="copyCode()" class="md-raised">Copy</md-button>
+                  <md-button ng-click="deleteCode()" class="md-raised">Delete</md-button>
+                  <md-button ng-click="discardCode()" class="md-raised">Discard</md-button>
+                  <md-button ng-click="saveCode()" class="md-raised md-warn">Save</md-button>
+                </md-truncate>
               </div>
-            </div>
-          </div>
-          <div ng-if="currentNavItem === 'arenaConfigPage'">
-            <ul>
-              <li ng-repeat="bot in selectedBots">{{bot.name}} : count={{bot.count}}</li>
-            </ul>
-            <md-button ng-click="addBot()" class="md-raised">Add</md-button>
-            <md-button ng-click="magic()" class="md-raised md-primary">Test</md-button>
+            </md-toolbar>
+            <md-content>
+              <div id="container" style="width:100%;height:640px"></div>
+            </md-content>
           </div>
           <div ng-show="currentNavItem === 'arenaPage'">
-            <md-content flex layout-padding>
-              <div layout="column">
-                <div flex>
-                  <h2 class="md-flex">Board (size: {{sizeX}} x {{sizeY}})</h2>
-                </div>
-                <div flex>
-                  <canvas id="canvas" width="680" height="480"></canvas>
-                </div>
-                <div flex>
-                  <md-button ng-click="step()" class="md-raised md-warn">Step</md-button>
-                  <md-button ng-click="toggleAutoRun()" class="md-raised">Run/Stop</md-button>
-                  <md-button ng-click="restart()" class="md-raised md-primary">Restart</md-button>
-                </div>
+            <md-toolbar>
+              <div class="md-toolbar-tools">
+                <md-truncate>Board (size: {{sizeX}} x {{sizeY}})</md-truncate>
               </div>
+            </md-toolbar>
+            <md-toolbar class="md-hue-2">
+              <div class="md-toolbar-tools">
+                <md-truncate>
+                  <md-button ng-click="step()" class="md-raised">Step</md-button>
+                  <md-button ng-click="toggleAutoRun()" class="md-raised">Run/Stop</md-button>
+                  <md-button ng-click="restart()" class="md-raised">Restart</md-button>
+                  <md-button ng-click="setupArena()" class="md-raised md-warn">Setup</md-button>
+                </md-truncate>
+              </div>
+            </md-toolbar>
+            <md-content flex layout-padding>
+              <canvas id="canvas" width="680" height="480"></canvas>
             </md-content>
           </div>
         </div>

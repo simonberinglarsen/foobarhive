@@ -50,12 +50,15 @@ Game.prototype.runTransaction = function (player, transaction) {
         toField.resources += transaction.amountToTransfer;
         toField.player = fromField.player;
     }
-    if (fromField.resources == 0)
-        fromField.player = 0;
 }
 Game.prototype.submitCode = function (codeText) {
-    var newDoMove = new Function('myBlocks', codeText);
-    this.bots[0].doMove = newDoMove;
+    var botIndex = 0;
+    try {
+        var newDoMove = new Function('myBlocks', codeText);
+        this.bots[botIndex].doMove = newDoMove;
+    } catch (err) {
+        this.bots[botIndex].doMove = function (myBlocks) { return null; }
+    }
 }
 Game.prototype.processRound = function () {
     console.log("Game.prototype.processRound");
@@ -63,7 +66,16 @@ Game.prototype.processRound = function () {
     for (var i = 0; i < this.bots.length; i++) {
         var player = i + 1;
         var blocks = this.board.getBlocks(player);
-        var botOutput = this.bots[i].doMove(blocks);
+
+        var botOutput = null;
+        try {
+            var stdoutText = this.bots[i].doMove(blocks);
+            var botOutputText = stdoutText.split(" ");
+            botOutput = [Number(botOutputText[0]), Number(botOutputText[1]), Number(botOutputText[2])];
+        }
+        catch (err) {
+            // ai failed
+        }
         if (botOutput && botOutput.length == 3) {
             var transaction = new Transaction(botOutput[0], botOutput[1], botOutput[2]);
             this.runTransaction(player, transaction);

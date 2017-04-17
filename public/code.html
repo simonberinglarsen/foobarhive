@@ -1,0 +1,21 @@
+
+<md-toolbar>
+  <div class="md-toolbar-tools">
+    <md-truncate>file1        </md-truncate>
+  </div>
+</md-toolbar>
+<md-toolbar class="md-hue-2">
+  <div class="md-toolbar-tools">
+    <md-truncate>
+      <md-button ng-click="copyCode()" class="md-raised">Open</md-button>
+      <md-button ng-click="copyCode()" class="md-raised">Rename</md-button>
+      <md-button ng-click="copyCode()" class="md-raised">Copy</md-button>
+      <md-button ng-click="deleteCode()" class="md-raised">Delete</md-button>
+      <md-button ng-click="discardCode()" class="md-raised">Discard</md-button>
+      <md-button ng-click="saveCode()" class="md-raised md-warn">Save</md-button>
+    </md-truncate>
+  </div>
+</md-toolbar>
+<md-content>
+  <div id="container" style="width:100%;height:640px"></div>
+</md-content>

@@ -1,0 +1,13 @@
+md-toolbar
+    div(class="md-toolbar-tools")
+        md-truncate Board (size: {{sizeX}} x {{sizeY}})
+md-toolbar(class="md-hue-2")
+    div(class="md-toolbar-tools")
+        md-truncate
+            md-button(class="md-raised" ng-click="step()") Step
+            md-button(class="md-raised" ng-click="toggleAutoRun()") Run/Stop
+            md-button(class="md-raised" ng-click="restart()") Restart
+            md-button(class="md-raised md-warn" ng-click="setupArena()") Setup
+
+md-content(flex layout-padding)
+    canvas(id="canvas" width="680" height="480")

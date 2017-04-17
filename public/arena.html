@@ -1,0 +1,19 @@
+
+<md-toolbar>
+  <div class="md-toolbar-tools">
+    <md-truncate>Board (size: {{sizeX}} x {{sizeY}})</md-truncate>
+  </div>
+</md-toolbar>
+<md-toolbar class="md-hue-2">
+  <div class="md-toolbar-tools">
+    <md-truncate>
+      <md-button ng-click="step()" class="md-raised">Step</md-button>
+      <md-button ng-click="toggleAutoRun()" class="md-raised">Run/Stop</md-button>
+      <md-button ng-click="restart()" class="md-raised">Restart</md-button>
+      <md-button ng-click="setupArena()" class="md-raised md-warn">Setup</md-button>
+    </md-truncate>
+  </div>
+</md-toolbar>
+<md-content flex="flex" layout-padding="layout-padding">
+  <canvas id="canvas" width="680" height="480"></canvas>
+</md-content>

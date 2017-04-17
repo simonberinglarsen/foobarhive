@@ -12,33 +12,13 @@ html(lang="en")
                     h2(class="md-flex") Development Environment
             md-content(class="md-padding")
                 md-nav-bar(md-selected-nav-item="currentNavItem", nav-bar-aria-label="navigation links")
-                    md-nav-item(md-nav-click="goto('codePage')", name="codePage") Code
-                    md-nav-item(md-nav-click="goto('arenaConfigPage')", name="arenaConfigPage") Arena-Config
+                    md-nav-item(md-nav-click="goto('codePage');", name="codePage") Code
                     md-nav-item(md-nav-click="goto('arenaPage');draw();", name="arenaPage") Arena
                 div(class="ext-content")
                     div(ng-show="currentNavItem === 'codePage'")
-                        div(layout="column")
-                            div(flex)
-                                    md-button(class="md-raised md-primary" ng-click="newCode()") New
-                                    md-button(class="md-raised" ng-click="saveCode()") Save
-                            div(plex)
-                                div(id="container" style="width:100%;height:640px")
-                    div(ng-if="currentNavItem === 'arenaConfigPage'")
-                        ul
-                            li(ng-repeat="bot in selectedBots") {{bot.name}} : count={{bot.count}}
-                        md-button(class="md-raised" ng-click="addBot()") Add
-                        md-button(class="md-raised md-primary" ng-click="magic()") Test
+                        include code
                     div(ng-show="currentNavItem === 'arenaPage'")
-                        md-content(flex layout-padding)
-                            div(layout="column")
-                                div(flex)
-                                    h2(class="md-flex") Board (size: {{sizeX}} x {{sizeY}})
-                                div(flex)
-                                    canvas(id="canvas" width="680" height="480")
-                                div(flex)
-                                    md-button(class="md-raised md-warn" ng-click="step()") Step
-                                    md-button(class="md-raised" ng-click="toggleAutoRun()") Run/Stop
-                                    md-button(class="md-raised md-primary" ng-click="restart()") Restart
+                        include arena
         script(src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js")
         script(src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js")
         script(src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js")

@@ -9,7 +9,7 @@ angular.module('MyApp', ['ngMaterial'])
         $scope.sizeY = 0;
         $scope.bots = ['demo-bot-1', 'demo-bot-2', 'custom-code'];
         $scope.selectedBots = [{ name: 'demo-bot-1', count: 2 }, { name: 'demo-bot-2', count: 3 }, { name: 'custom-code', count: 1 }];
-
+        $scope.editorInitialized = false;
         // communication
         _self.stepRequests = 0;
         _self.autoStep = false;
@@ -50,17 +50,6 @@ angular.module('MyApp', ['ngMaterial'])
 
         // the game
         var state = {};
-
-        $scope.xorshift = function (x) {
-            x = x & 0xffffffff;
-            x ^= x << 13;
-            x = x & 0xffffffff;
-            x ^= x >> 17;
-            x = x & 0xffffffff;
-            x ^= x << 5;
-            x = x & 0xffffffff;
-            return x;
-        };
 
         $scope.createPlayerColors = function () {
             playerColors.push('rgb(255,255,255)');
@@ -131,6 +120,37 @@ angular.module('MyApp', ['ngMaterial'])
                 }
             }
         };
+
+        $scope.initEditor = function () {
+            if($scope.editorInitialized)
+                return;
+            // init editor
+            require.config({ paths: { 'vs': 'components/monaco-editor/release/min/vs' } });
+            require(['vs/editor/editor.main'], function () {
+                var e = document.getElementById('container');
+                $scope.editor = monaco.editor.create(e, {
+                    value: [
+                        '/* ',
+                        ' * This is the AI!',
+                        ' * You have 1 input! and thats an array called: myBlocks',
+                        ' * ...use it wisely - good luck',
+                        ' */',
+                        '',
+                        'if (!myBlocks || myBlocks.length === 0)',
+                        '    return null;',
+                        'var randomBlockIndex = Math.floor(Math.random() * myBlocks.length);',
+                        'var source = myBlocks[randomBlockIndex];',
+                        'randomBlockIndex = Math.floor(Math.random() * source.neighbours.length);',
+                        'var dest = source.neighbours[randomBlockIndex];',
+                        'var randomResources = Math.floor(Math.random() * source.resources);',
+                        'randomResources = source.resources;',
+                        'return (source.id)+" "+(dest.id)+" "+(randomResources-1)',
+                    ].join('\n'),
+                    language: 'javascript'
+                });
+            });
+            $scope.editorInitialized = true;
+        }
         $scope.step = function () {
             _self.stepRequests++;
             $scope.sendClientData('step');
@@ -178,31 +198,5 @@ angular.module('MyApp', ['ngMaterial'])
         };
         $scope.createPlayerColors();
         $scope.draw();
-
-        // init editor
-        require.config({ paths: { 'vs': 'components/monaco-editor/release/min/vs' } });
-        require(['vs/editor/editor.main'], function () {
-            var e = document.getElementById('container');
-            $scope.editor = monaco.editor.create(e, {
-                value: [
-                    '/* ',
-                    ' * This is the AI!',
-                    ' * You have 1 input! and thats an array called: myBlocks',
-                    ' * ...use it wisely - good luck',
-                    ' */',
-                    '',
-                    'if (!myBlocks || myBlocks.length === 0)',
-                    '    return null;',
-                    'var randomBlockIndex = Math.floor(Math.random() * myBlocks.length);',
-                    'var source = myBlocks[randomBlockIndex];',
-                    'randomBlockIndex = Math.floor(Math.random() * source.neighbours.length);',
-                    'var dest = source.neighbours[randomBlockIndex];',
-                    'var randomResources = Math.floor(Math.random() * source.resources);',
-                    'randomResources = source.resources;',
-                    'return [source.id, dest.id, randomResources-1];',
-                ].join('\n'),
-                language: 'javascript'
-            });
-        });
-
+        $scope.initEditor();
     });
